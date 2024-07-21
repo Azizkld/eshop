@@ -11,4 +11,5 @@ public class UtilisateurAllResponse {
     private String message;
     private UtilisateurAll utilisateurAll;
     private List<UtilisateurAll> utilisateursAlls;
+    private String image;
 }

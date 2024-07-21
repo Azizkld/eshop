@@ -28,10 +28,6 @@ public class ContractAll {
     @Column(name = "co_code", nullable = false)
     private Long coCode;
 
-    @Size(max = 255)
-    @Column(name = "co_qr_code")
-    private String coQrCode;
-
     @Column(name = "co_status")
     private Boolean coStatus;
 

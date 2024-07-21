@@ -11,4 +11,6 @@ public class UtilisateurAllRequest {
     private String utLName;
     private String utMail;
     private Integer utZipCode;
+    private String image;
+
 }

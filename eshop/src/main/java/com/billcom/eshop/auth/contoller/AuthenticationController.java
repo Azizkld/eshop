@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -22,8 +23,23 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity<LoginResponse> register(
-            @RequestBody RegisterRequest request
+            @RequestParam("firstname") String firstname,
+            @RequestParam("cin") String cin,
+            @RequestParam("lastname") String lastname,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam("utCinFrontImage") MultipartFile utCinFrontImage,
+            @RequestParam("utCinBackImage") MultipartFile utCinBackImage
     ) {
+        RegisterRequest request = RegisterRequest.builder()
+                .firstname(firstname)
+                .cin(cin)
+                .lastname(lastname)
+                .email(email)
+                .password(password)
+                .utCinFrontImage(utCinFrontImage)
+                .utCinBackImage(utCinBackImage)
+                .build();
         return ResponseEntity.ok(service.register(request));
     }
 

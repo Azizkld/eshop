@@ -34,7 +34,6 @@ public class NumAjoutService implements InterfaceNumAjoutService {
             num.setNumOperatorName(numAjoutRequest.getNumOperatorName());
             num.setNumPinCode(numAjoutRequest.getNumPinCode());
             num.setNumPukCode(numAjoutRequest.getNumPukCode());
-            num.setNumQrCode(numAjoutRequest.getNumQrCode());
             num.setNumActivationStatus(numAjoutRequest.isNumActivationStatus());
             num.setNumPhoneNumber(numAjoutRequest.getNumPhoneNumber());
             num.setNumType("unknown"); // assuming the type to be unknown or setting it later

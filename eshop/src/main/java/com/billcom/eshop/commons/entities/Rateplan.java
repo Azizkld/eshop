@@ -22,6 +22,11 @@ public class Rateplan {
 
     @Size(max = 30)
     @NotNull
+    @Column(name = "rp_name", nullable = false, length = 30)
+    private String rpName;
+
+    @Size(max = 30)
+    @NotNull
     @Column(name = "rp_desc", nullable = false, length = 30)
     private String rpDesc;
 

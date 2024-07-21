@@ -1,7 +1,9 @@
 package com.billcom.eshop.service;
 
 import com.billcom.eshop.InterfaceService.InterfaceStatusService;
+import com.billcom.eshop.InterfaceService.EmailService;
 import com.billcom.eshop.Request.StatusRequest;
+import com.billcom.eshop.Request.EmailDetails;
 import com.billcom.eshop.Responce.StatusResponse;
 import com.billcom.eshop.commons.entities.UtilisateurAll;
 import com.billcom.eshop.commons.repositories.UtilisateurAllRepository;
@@ -15,6 +17,9 @@ public class StatusService implements InterfaceStatusService {
     @Autowired
     private UtilisateurAllRepository utilisateurAllRepository;
 
+    @Autowired
+    private EmailService emailService; // Ajout du service EmailService
+
     @Override
     public StatusResponse changeUserStatus(StatusRequest statusRequest) {
         StatusResponse statusResponse = new StatusResponse();
@@ -26,6 +31,16 @@ public class StatusService implements InterfaceStatusService {
             utilisateurAllRepository.save(utilisateur);
             statusResponse.setSuccess(true);
             statusResponse.setMessage("User status updated successfully.");
+
+            // Envoi de l'email de notification
+            EmailDetails emailDetails = new EmailDetails(
+                    utilisateur.getUtMail(),
+                    "Votre compte a ete verifier par notre administarateur tu a l acce dans notre application(Orange Plus)",
+                    "Notification du votre validation du compte",
+                    ""
+            );
+            emailService.sendSimpleMail(emailDetails);
+
         } else {
             statusResponse.setSuccess(false);
             statusResponse.setMessage("User not found.");
@@ -34,3 +49,4 @@ public class StatusService implements InterfaceStatusService {
         return statusResponse;
     }
 }
+

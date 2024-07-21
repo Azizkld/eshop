@@ -30,6 +30,7 @@ public class RateplanService implements InterfaceRateplanService {
     public RateplanResponse addRateplan(RateplanRequest rateplanRequest) {
         Rateplan rateplan = new Rateplan();
         rateplan.setRpDesc(rateplanRequest.getRpDesc());
+        rateplan.setRpName(rateplanRequest.getRpName());
         rateplan.setRpValidationDays(rateplanRequest.getRpValidationDays());
         rateplan.setRpPrice(Long.valueOf(rateplanRequest.getRpPrice()));
 

@@ -62,6 +62,15 @@ public class UtilisateurAll {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "ut_image")
+    private String utImage;
+
+    @Column(name = "ut_CinFrontImage")
+    private String utCinFrontImage;
+
+    @Column(name = "ut_CinBackImage")
+    private String utCinBacktImage;
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Token> tokens;

@@ -69,7 +69,7 @@ public class ContractService implements InterfaceContractService {
             newContract.setCoExpirDate(currentDate.plusDays(rateplan.getRpValidationDays()));
             newContract.setCoStatus(true);
             newContract.setCoCode(generateRandomCoCode());
-            newContract.setCoQrCode(generateRandomQrCode());
+
 
             // Save the new contract
             contractRepository.save(newContract);

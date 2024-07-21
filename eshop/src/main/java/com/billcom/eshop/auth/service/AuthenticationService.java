@@ -12,6 +12,7 @@ import com.billcom.eshop.commons.dtos.UtilisateurAllDto;
 import com.billcom.eshop.commons.entities.UtilisateurAll;
 import com.billcom.eshop.commons.mappers.UtilisateurAllMapper;
 import com.billcom.eshop.commons.repositories.UtilisateurAllRepository;
+import com.billcom.eshop.service.ImageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import java.io.IOException;
 
 @Service
@@ -32,20 +35,26 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UtilisateurAllMapper utilisateurAllMapper;
+    private final ImageService imageService;  // Add ImageService
 
     public LoginResponse register(RegisterRequest request) {
+        // Handle image uploads
+        String frontImageName = imageService.getAlphaNumericString(20) + StringUtils.cleanPath(request.getUtCinFrontImage().getOriginalFilename());
+        String backImageName = imageService.getAlphaNumericString(20) + StringUtils.cleanPath(request.getUtCinBackImage().getOriginalFilename());
+
+        imageService.uploadToLocalFileSystem(request.getUtCinFrontImage(), frontImageName);
+        imageService.uploadToLocalFileSystem(request.getUtCinBackImage(), backImageName);
+
         UtilisateurAllDto user = UtilisateurAllDto.builder()
                 .utFName(request.getFirstname())
                 .utLName(request.getLastname())
                 .utCin(request.getCin())
                 .utPassword(passwordEncoder.encode(request.getPassword()))
                 .utMail(request.getEmail())
-                .utCountry(request.getCountry())
-                .utZipCode(request.getZipCode())
-                .utAdresse(request.getAdresse())
-                .utCity(request.getCity())
                 .utStatus(false)
                 .role(Role.USER)
+                .utCinFrontImage(frontImageName)
+                .utCinBacktImage(backImageName)
                 .build();
 
         UtilisateurAll savedUser = this.repository.save(this.utilisateurAllMapper.toEntity(user));

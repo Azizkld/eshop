@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -17,10 +18,11 @@ public class RegisterRequest {
     private String lastname;
     private String email;
     private String password;
-    private String adresse;
-    private String country;
-    private String city;
-    private Integer zipCode;
+
+    // New fields for image uploads
+    private MultipartFile utCinFrontImage;
+    private MultipartFile utCinBackImage;
+
 
 
 

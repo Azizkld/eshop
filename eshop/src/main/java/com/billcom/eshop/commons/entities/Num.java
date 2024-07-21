@@ -38,11 +38,6 @@ public class Num {
     @Column(name = "num_puk_code", nullable = false)
     private Long numPukCode;
 
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "num_qr_code", nullable = false)
-    private String numQrCode;
-
 
     @NotNull
     @Column(name = "num_type", nullable = false)

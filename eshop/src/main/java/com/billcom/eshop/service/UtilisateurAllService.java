@@ -84,5 +84,14 @@ public class UtilisateurAllService implements InterfaceUtilisateurAllService {
         }
         return response;
     }
+
+    @Override
+    public UtilisateurAll UtilisateurUpdateImage(Long id, String imageName) {
+        UtilisateurAll utilisateur = utilisateurAllRepository.findById(id).get();
+        utilisateur.setUtImage(imageName);
+        System.out.println("done");
+
+        return utilisateurAllRepository.save(utilisateur);
+    }
 }
 
