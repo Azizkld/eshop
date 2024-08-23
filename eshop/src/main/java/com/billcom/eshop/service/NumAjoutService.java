@@ -34,7 +34,7 @@ public class NumAjoutService implements InterfaceNumAjoutService {
             num.setNumOperatorName(numAjoutRequest.getNumOperatorName());
             num.setNumPinCode(numAjoutRequest.getNumPinCode());
             num.setNumPukCode(numAjoutRequest.getNumPukCode());
-            num.setNumActivationStatus(numAjoutRequest.isNumActivationStatus());
+            num.setNumActivationStatus(false); // Status d'activation défini sur false (0)
             num.setNumPhoneNumber(numAjoutRequest.getNumPhoneNumber());
             num.setNumType("unknown"); // assuming the type to be unknown or setting it later
             num.setNumActivationDate(null);
@@ -69,3 +69,4 @@ public class NumAjoutService implements InterfaceNumAjoutService {
         return phoneNumberStr.matches("^5\\d{7}$");
     }
 }
+

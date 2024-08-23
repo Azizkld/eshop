@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ContractResponse {
+public class ContractResponse  {
     private Boolean isSuccessfull;
     private String message;
     private ContractAll contract;

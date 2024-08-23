@@ -20,8 +20,8 @@ public class RegisterRequest {
     private String password;
 
     // New fields for image uploads
-    private MultipartFile utCinFrontImage;
-    private MultipartFile utCinBackImage;
+  private MultipartFile utCinFrontImage;
+  private MultipartFile utCinBackImage;
 
 
 

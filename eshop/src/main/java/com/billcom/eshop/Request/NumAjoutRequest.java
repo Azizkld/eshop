@@ -19,8 +19,6 @@ public class NumAjoutRequest {
     @Digits(integer = 4, fraction = 0, message = "Le code PUK doit contenir exactement 4 chiffres")
     private Long numPukCode;
 
-    @NotNull
-    private String numQrCode;
 
     @NotNull
     private boolean numActivationStatus ;

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "bearer-key")
 @RestController
 @RequestMapping("/api/status")
-@CrossOrigin("*")
 public class StatusController {
     @Autowired
     private InterfaceStatusService statusService;

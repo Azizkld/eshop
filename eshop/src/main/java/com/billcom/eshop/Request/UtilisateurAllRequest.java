@@ -12,5 +12,7 @@ public class UtilisateurAllRequest {
     private String utMail;
     private Integer utZipCode;
     private String image;
+    private String utPassword;
+    private String currentPassword;  // Pour la validation du mot de passe actuel
 
 }

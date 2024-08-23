@@ -25,7 +25,7 @@ public class Rateplan {
     @Column(name = "rp_name", nullable = false, length = 30)
     private String rpName;
 
-    @Size(max = 30)
+    @Size(max = 500)
     @NotNull
     @Column(name = "rp_desc", nullable = false, length = 30)
     private String rpDesc;

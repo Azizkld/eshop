@@ -28,6 +28,9 @@ public class ContractController {
     }
 
     @GetMapping("/findAllContract")
+
+
+
     public ResponseEntity<ContractResponse> findAllContract() {
         ContractResponse contractResponse = contractService.findAllContract();
         if (contractResponse.getIsSuccessfull()) {
@@ -43,6 +46,16 @@ public class ContractController {
             return ResponseEntity.ok(contractResponse);
         } else {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(contractResponse);
+        }
+    }
+
+    @DeleteMapping("/supprimerContract/{id}")
+    public ResponseEntity<ContractResponse> supprimerContract(@PathVariable Long id) {
+        ContractResponse contractResponse = contractService.supprimerContract(id);
+        if (contractResponse.getIsSuccessfull()) {
+            return ResponseEntity.ok(contractResponse);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(contractResponse);
         }
     }
 }

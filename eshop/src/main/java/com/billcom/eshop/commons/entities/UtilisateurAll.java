@@ -82,4 +82,9 @@ public class UtilisateurAll {
     @OneToMany(mappedBy = "utilisateurAll")
     private List<ContractAll> contracts = new ArrayList<>();
 
+    // Relation avec les réclamations
+    @JsonIgnore
+    @OneToMany(mappedBy = "utilisateurAll", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Claim> claims = new ArrayList<>();
+
 }

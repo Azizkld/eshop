@@ -141,4 +141,21 @@ public class ContractService implements InterfaceContractService {
         }
         return contractResponse;
     }
+
+    @Override
+    public ContractResponse supprimerContract(Long contractId) {
+        ContractResponse contractResponse = new ContractResponse();
+        Optional<ContractAll> contractOptional = contractRepository.findById(contractId);
+
+        if (contractOptional.isPresent()) {
+            contractRepository.deleteById(contractId);
+            contractResponse.setIsSuccessfull(true);
+            contractResponse.setMessage("Contract successfully deleted.");
+        } else {
+            contractResponse.setIsSuccessfull(false);
+            contractResponse.setMessage("Contract not found with id: " + contractId);
+        }
+
+        return contractResponse;
+    }
 }

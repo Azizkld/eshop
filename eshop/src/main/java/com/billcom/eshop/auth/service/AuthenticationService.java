@@ -53,8 +53,7 @@ public class AuthenticationService {
                 .utMail(request.getEmail())
                 .utStatus(false)
                 .role(Role.USER)
-                .utCinFrontImage(frontImageName)
-                .utCinBacktImage(backImageName)
+
                 .build();
 
         UtilisateurAll savedUser = this.repository.save(this.utilisateurAllMapper.toEntity(user));
@@ -86,6 +85,7 @@ public class AuthenticationService {
         return LoginResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .user_id(user.getId())
                 .build();
     }
 

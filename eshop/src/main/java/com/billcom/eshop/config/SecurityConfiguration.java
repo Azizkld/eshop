@@ -14,6 +14,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.util.pattern.PathPatternParser;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -49,6 +58,19 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+
+//    @Bean
+//    public CorsConfigurationSource corsWebFilter() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowCredentials(true);
+//        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+//        configuration.addAllowedHeader("*");
+//        configuration.addExposedHeader("*");
+//        configuration.addAllowedMethod("*");
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 
 
 }

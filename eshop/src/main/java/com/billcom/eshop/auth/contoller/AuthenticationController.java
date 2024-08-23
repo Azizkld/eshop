@@ -13,21 +13,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
+
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin("*")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
     private final AuthenticationService service;
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register", consumes = MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<LoginResponse> register(
             @RequestParam("firstname") String firstname,
             @RequestParam("cin") String cin,
             @RequestParam("lastname") String lastname,
             @RequestParam("email") String email,
-            @RequestParam("password") String password,
+            @RequestParam("password") String password ,
             @RequestParam("utCinFrontImage") MultipartFile utCinFrontImage,
             @RequestParam("utCinBackImage") MultipartFile utCinBackImage
     ) {
@@ -37,7 +38,7 @@ public class AuthenticationController {
                 .lastname(lastname)
                 .email(email)
                 .password(password)
-                .utCinFrontImage(utCinFrontImage)
+               .utCinFrontImage(utCinFrontImage)
                 .utCinBackImage(utCinBackImage)
                 .build();
         return ResponseEntity.ok(service.register(request));

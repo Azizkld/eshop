@@ -54,15 +54,24 @@ public class RateplanService implements InterfaceRateplanService {
     @Override
     public RateplanResponse deleteRateplan(Long id) {
         RateplanResponse rateplanResponse = new RateplanResponse();
-        if (rateplanRepository.existsById(id)) {
+
+        // Vérification de l'existence du Rateplan
+        Optional<Rateplan> rateplanOptional = rateplanRepository.findById(id);
+
+        if (rateplanOptional.isPresent()) {
+            // Suppression du Rateplan
             rateplanRepository.deleteById(id);
             rateplanResponse.setIsSuccessfull(true);
+            rateplanResponse.setMessage("Rateplan successfully deleted.");
         } else {
             rateplanResponse.setIsSuccessfull(false);
             rateplanResponse.setMessage("Rateplan not found with id: " + id);
         }
+
         return rateplanResponse;
     }
+
+
     @Override
     public RateplanResponse findAllRateplans() {
         List<Rateplan> rateplans = rateplanRepository.findAll();
@@ -78,6 +87,7 @@ public class RateplanService implements InterfaceRateplanService {
                 Map<String, Object> rateplanMap = new HashMap<>();
                 rateplanMap.put("id", rateplan.getId());
                 rateplanMap.put("rpDesc", rateplan.getRpDesc());
+                rateplanMap.put("rpName", rateplan.getRpName());
                 rateplanMap.put("rpPrice", rateplan.getRpPrice());
                 rateplanMap.put("rpValidationDays", rateplan.getRpValidationDays());
 
@@ -122,6 +132,8 @@ public class RateplanService implements InterfaceRateplanService {
             Rateplan existingRateplan = optionalRateplan.get();
             existingRateplan.setRpDesc(rateplanRequest.getRpDesc());
             existingRateplan.setRpPrice(Long.valueOf(rateplanRequest.getRpPrice()));
+            existingRateplan.setRpName(rateplanRequest.getRpName());
+            existingRateplan.setRpValidationDays(rateplanRequest.getRpValidationDays());
             Set<ServiceName> services = getServiceNames(rateplanRequest.getServiceIds());
             existingRateplan.setServices(services);
             rateplanRepository.save(existingRateplan);

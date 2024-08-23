@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface UtilisateurAllRepository extends JpaRepository<UtilisateurAll, Long> {
     Optional<UtilisateurAll> findByUtCin(String cin);
+
 }

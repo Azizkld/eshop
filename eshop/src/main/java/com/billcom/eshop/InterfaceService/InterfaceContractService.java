@@ -7,5 +7,6 @@ public interface InterfaceContractService {
     ContractResponse ajouterContract(ContractRequest contractRequest);
     ContractResponse findAllContract();
     ContractResponse findAllContractById(Long utilisateurId);
+    ContractResponse supprimerContract(Long contractId);
 
 }

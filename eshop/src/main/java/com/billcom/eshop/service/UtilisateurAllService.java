@@ -65,25 +65,64 @@ public class UtilisateurAllService implements InterfaceUtilisateurAllService {
     public UtilisateurAllResponse updateUtilisateur(Long id, UtilisateurAllRequest request) {
         Optional<UtilisateurAll> utilisateurOptional = utilisateurAllRepository.findById(id);
         UtilisateurAllResponse response = new UtilisateurAllResponse();
+
         if (utilisateurOptional.isPresent()) {
             UtilisateurAll utilisateurAll = utilisateurOptional.get();
-            utilisateurAll.setUtAdresse(request.getUtAdresse());
-            utilisateurAll.setUtCity(request.getUtCity());
-            utilisateurAll.setUtCountry(request.getUtCountry());
-            utilisateurAll.setUtFName(request.getUtFName());
-            utilisateurAll.setUtLName(request.getUtLName());
-            utilisateurAll.setUtMail(request.getUtMail());
-            utilisateurAll.setUtZipCode(request.getUtZipCode());
 
+            // Vérifier le mot de passe actuel
+            if (!utilisateurAll.getUtPassword().equals(request.getCurrentPassword())) {
+                response.setSuccessfull(false);
+                response.setMessage("Mot de passe actuel incorrect.");
+                return response;
+            }
+
+            // Ne pas permettre la modification de ces champs
+            // utilisateurAll.setUtCin(request.getUtCin()); // Non modifiable
+            // utilisateurAll.setUtFName(request.getUtFName()); // Non modifiable
+            // utilisateurAll.setUtLName(request.getUtLName()); // Non modifiable
+
+            // Mise à jour des champs optionnels
+            if (request.getUtAdresse() != null) {
+                utilisateurAll.setUtAdresse(request.getUtAdresse());
+            }
+            if (request.getUtCity() != null) {
+                utilisateurAll.setUtCity(request.getUtCity());
+            }
+            if (request.getUtCountry() != null) {
+                utilisateurAll.setUtCountry(request.getUtCountry());
+            }
+            if (request.getUtZipCode() != null) {
+                utilisateurAll.setUtZipCode(request.getUtZipCode());
+            }
+
+            // Mise à jour des champs obligatoires qui ne doivent pas être vides
+            if (request.getUtMail() != null && !request.getUtMail().isEmpty()) {
+                utilisateurAll.setUtMail(request.getUtMail());
+            } else {
+                response.setSuccessfull(false);
+                response.setMessage("L'email ne peut pas être vide.");
+                return response;
+            }
+
+            if (request.getUtPassword() != null && !request.getUtPassword().isEmpty()) {
+                utilisateurAll.setUtPassword(request.getUtPassword());
+            } else {
+                response.setSuccessfull(false);
+                response.setMessage("Le mot de passe ne peut pas être vide.");
+                return response;
+            }
+
+            // Sauvegarder les modifications
             utilisateurAllRepository.save(utilisateurAll);
             response.setSuccessfull(true);
             response.setUtilisateurAll(utilisateurAll);
         } else {
             response.setSuccessfull(false);
-            response.setMessage("Utilisateur not found with id: " + id);
+            response.setMessage("Utilisateur non trouvé avec l'ID: " + id);
         }
         return response;
     }
+
 
     @Override
     public UtilisateurAll UtilisateurUpdateImage(Long id, String imageName) {
