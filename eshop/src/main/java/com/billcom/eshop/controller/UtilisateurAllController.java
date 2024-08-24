@@ -1,6 +1,7 @@
 package com.billcom.eshop.controller;
 
 import com.billcom.eshop.Request.UtilisateurAllRequest;
+import com.billcom.eshop.Request.UtilisateurAllRequestModif;
 import com.billcom.eshop.Responce.UtilisateurAllResponse;
 import com.billcom.eshop.InterfaceService.InterfaceUtilisateurAllService;
 import com.billcom.eshop.commons.entities.UtilisateurAll;
@@ -52,9 +53,10 @@ public class UtilisateurAllController {
     @PutMapping("modifierUtilisateurId")
     public UtilisateurAllResponse updateUtilisateur(
             @RequestParam long id,
-            @RequestBody UtilisateurAllRequest utilisateurAllRequest) {
-        return utilisateurAllService.updateUtilisateur(id, utilisateurAllRequest);
+            @RequestBody UtilisateurAllRequestModif utilisateurAllRequestModif) {
+        return utilisateurAllService.updateUtilisateur(id, utilisateurAllRequestModif);
     }
+
 
 
 

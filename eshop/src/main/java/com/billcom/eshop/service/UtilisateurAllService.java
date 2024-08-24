@@ -2,11 +2,13 @@ package com.billcom.eshop.service;
 
 import com.billcom.eshop.InterfaceService.InterfaceUtilisateurAllService;
 import com.billcom.eshop.Request.UtilisateurAllRequest;
+import com.billcom.eshop.Request.UtilisateurAllRequestModif;
 import com.billcom.eshop.Responce.UtilisateurAllResponse;
 import com.billcom.eshop.commons.entities.UtilisateurAll;
 import com.billcom.eshop.commons.mappers.UtilisateurAllMapper;
 import com.billcom.eshop.commons.repositories.UtilisateurAllRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,9 @@ public class UtilisateurAllService implements InterfaceUtilisateurAllService {
 
     @Autowired
     private UtilisateurAllRepository utilisateurAllRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UtilisateurAllMapper utilisateurAllMapper;
@@ -62,15 +67,18 @@ public class UtilisateurAllService implements InterfaceUtilisateurAllService {
     }
 
     @Override
-    public UtilisateurAllResponse updateUtilisateur(Long id, UtilisateurAllRequest request) {
-        Optional<UtilisateurAll> utilisateurOptional = utilisateurAllRepository.findById(id);
+    public UtilisateurAllResponse updateUtilisateur(Long id,UtilisateurAllRequestModif request) {
         UtilisateurAllResponse response = new UtilisateurAllResponse();
 
+        // Récupérer l'utilisateur par son ID
+        Optional<UtilisateurAll> utilisateurOptional = utilisateurAllRepository.findById(id);
         if (utilisateurOptional.isPresent()) {
             UtilisateurAll utilisateurAll = utilisateurOptional.get();
+System.out.println("password "+request.getCurrentPassword());
+            System.out.println("password uti"+utilisateurAll.getUtPassword());
 
-            // Vérifier le mot de passe actuel
-            if (!utilisateurAll.getUtPassword().equals(request.getCurrentPassword())) {
+            // Vérification que le mot de passe actuel est correct pour cet utilisateur
+            if (!passwordEncoder.matches(request.getCurrentPassword(), utilisateurAll.getUtPassword())) {
                 response.setSuccessfull(false);
                 response.setMessage("Mot de passe actuel incorrect.");
                 return response;
@@ -95,7 +103,7 @@ public class UtilisateurAllService implements InterfaceUtilisateurAllService {
                 utilisateurAll.setUtZipCode(request.getUtZipCode());
             }
 
-            // Mise à jour des champs obligatoires qui ne doivent pas être vides
+            // Mise à jour des champs obligatoires
             if (request.getUtMail() != null && !request.getUtMail().isEmpty()) {
                 utilisateurAll.setUtMail(request.getUtMail());
             } else {
@@ -105,7 +113,7 @@ public class UtilisateurAllService implements InterfaceUtilisateurAllService {
             }
 
             if (request.getUtPassword() != null && !request.getUtPassword().isEmpty()) {
-                utilisateurAll.setUtPassword(request.getUtPassword());
+                utilisateurAll.setUtPassword(passwordEncoder.encode(request.getUtPassword()));
             } else {
                 response.setSuccessfull(false);
                 response.setMessage("Le mot de passe ne peut pas être vide.");
@@ -122,6 +130,7 @@ public class UtilisateurAllService implements InterfaceUtilisateurAllService {
         }
         return response;
     }
+
 
 
     @Override

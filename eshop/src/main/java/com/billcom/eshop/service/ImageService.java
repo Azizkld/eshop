@@ -18,7 +18,7 @@ import java.util.Random;
 @Service
 public class ImageService {
 
-    public final String storageDirectoryPath ="C:\\Users\\fedik\\Desktop\\spring\\pfe back\\";
+    public final String storageDirectoryPath ="C:\\Users\\fedik\\Downloads\\OrangeTN-eshop (2)\\OrangeTN-eshop\\public\\";
   //  public final String storageDirectoryPath ="http://localhost:4200\\assets\\uploads";
     public ResponseEntity<String> uploadToLocalFileSystem(MultipartFile file,String nameImage) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
