@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ContractAllRepository extends JpaRepository<ContractAll, Long> {
     List<ContractAll> findByUtilisateurAllId(Long utilisateurId);
+
 }

@@ -1,6 +1,7 @@
 package com.billcom.eshop.controller;
 
 import com.billcom.eshop.Request.NumRequest;
+import com.billcom.eshop.Request.NumRequestAcheterSim;
 import com.billcom.eshop.Responce.NumResponse;
 import com.billcom.eshop.InterfaceService.InterfaceNumService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -19,7 +20,7 @@ public class NumController {
     private InterfaceNumService numService;
 
     @PostMapping("/acheterSim")
-    public ResponseEntity<NumResponse> acheterSim(@RequestParam Long utilisateurId, @RequestBody NumRequest numRequest) {
+    public ResponseEntity<NumResponse> acheterSim(@RequestParam Long utilisateurId, @RequestBody NumRequestAcheterSim numRequest) {
         return numService.acheterSim(utilisateurId, numRequest);
     }
 

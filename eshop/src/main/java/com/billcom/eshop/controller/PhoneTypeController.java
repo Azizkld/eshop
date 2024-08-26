@@ -22,4 +22,10 @@ public class PhoneTypeController {
         PhoneTypeResponse phoneTypeResponse = phoneTypeService.ajoutTypePhone(phoneTypeRequest);
         return ResponseEntity.ok(phoneTypeResponse);
     }
+
+    @GetMapping("/findAllPhoneType")
+    public ResponseEntity<PhoneTypeResponse> findAllPhoneType() {
+        PhoneTypeResponse phoneTypeResponse = phoneTypeService.findAllPhoneType();
+        return ResponseEntity.ok(phoneTypeResponse);
+    }
 }

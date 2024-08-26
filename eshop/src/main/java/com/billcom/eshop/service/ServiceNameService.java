@@ -8,6 +8,9 @@ import com.billcom.eshop.commons.repositories.ServiceNameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class ServiceNameService implements InterfaceServiceNameService {
 
@@ -26,9 +29,24 @@ public class ServiceNameService implements InterfaceServiceNameService {
         serviceNameRepository.save(serviceName);
 
         serviceNameResponse.setIsSuccessfull(true);
-        serviceNameResponse.setServiceName(serviceName);
+        serviceNameResponse.setSnDesc(serviceName.getSnDesc());
+        serviceNameResponse.setSnName(serviceName.getSnName());
+        serviceNameResponse.setSnType(serviceNameResponse.getSnType());
         serviceNameResponse.setMessage("Service added successfully");
 
         return serviceNameResponse;
+    }
+
+    @Override
+    public List<ServiceNameResponse> findAllServiceName() {
+        List<ServiceName> services = serviceNameRepository.findAll();
+
+        return services.stream().map(service -> {
+            ServiceNameResponse response = new ServiceNameResponse();
+            response.setSnDesc(service.getSnDesc());
+            response.setSnName(service.getSnName());
+            response.setSnType(service.getSnType());
+            return response;
+        }).collect(Collectors.toList());
     }
 }

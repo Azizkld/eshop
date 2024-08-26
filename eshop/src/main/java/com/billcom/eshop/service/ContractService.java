@@ -3,6 +3,7 @@ package com.billcom.eshop.service;
 import com.billcom.eshop.InterfaceService.EmailService;
 import com.billcom.eshop.InterfaceService.InterfaceContractService;
 import com.billcom.eshop.Request.ContractRequest;
+import com.billcom.eshop.Request.ContractRequestAjouter;
 import com.billcom.eshop.Request.EmailDetails;
 import com.billcom.eshop.Responce.ContractResponse;
 import com.billcom.eshop.commons.entities.ContractAll;
@@ -37,14 +38,15 @@ public class ContractService implements InterfaceContractService {
     private RateplanRepository rateplanRepository;
     @Autowired
     private EmailService emailService;
-    @Override
-    public ContractResponse ajouterContract(ContractRequest contractRequest) {
-       ContractResponse contractResponse = new ContractResponse();
 
-        // Fetch utilisateur, num, and rateplan from database
-        Optional<UtilisateurAll> utilisateurOptional = utilisateurRepository.findById(contractRequest.getUtilisateurId());
-        Optional<Num> numOptional = numRepository.findById(contractRequest.getNumId());
-        Optional<Rateplan> rateplanOptional = rateplanRepository.findById(contractRequest.getRateplanId());
+    @Override
+    public ContractResponse ajouterContract(ContractRequestAjouter contractRequestAjouter) {
+        ContractResponse contractResponse = new ContractResponse();
+
+        // Fetch utilisateur, num (by phone number), and rateplan from database
+        Optional<UtilisateurAll> utilisateurOptional = utilisateurRepository.findById(contractRequestAjouter.getUtilisateurId());
+        Optional<Num> numOptional = numRepository.findByNumPhoneNumber(contractRequestAjouter.getNumPhoneNumber());
+        Optional<Rateplan> rateplanOptional = rateplanRepository.findById(contractRequestAjouter.getRateplanId());
 
         if (utilisateurOptional.isPresent() && numOptional.isPresent() && rateplanOptional.isPresent()) {
             UtilisateurAll utilisateur = utilisateurOptional.get();
@@ -70,25 +72,23 @@ public class ContractService implements InterfaceContractService {
             newContract.setCoStatus(true);
             newContract.setCoCode(generateRandomCoCode());
 
-
             // Save the new contract
             contractRepository.save(newContract);
 
             contractResponse.setIsSuccessfull(true);
             contractResponse.setContract(newContract);
 
-            //envois mail notification
-            EmailDetails emailDetails = new EmailDetails(utilisateur.getUtMail(),"Nous avons le plaisir de vous informer que votre contrat a été créé avec succès","contract","");
+            // Send email notification
+            EmailDetails emailDetails = new EmailDetails(utilisateur.getUtMail(),
+                    "Nous avons le plaisir de vous informer que votre contrat a été créé avec succès",
+                    "contract",
+                    "");
             emailService.sendSimpleMail(emailDetails);
 
         } else {
             contractResponse.setIsSuccessfull(false);
-            contractResponse.setMessage("Invalid utilisateur, num or rateplan ID.");
-
+            contractResponse.setMessage("Invalid utilisateur, num, or rateplan ID.");
         }
-
-
-
 
         return contractResponse;
     }
@@ -96,16 +96,6 @@ public class ContractService implements InterfaceContractService {
     private Long generateRandomCoCode() {
         Random random = new Random();
         return 1000000000L + random.nextLong(9000000000L);
-    }
-
-    private String generateRandomQrCode() {
-        int length = 6;
-        StringBuilder qrCode = new StringBuilder("QR");
-        Random random = new Random();
-        for (int i = 0; i < length; i++) {
-            qrCode.append(random.nextInt(10));
-        }
-        return qrCode.toString();
     }
 
     @Override
@@ -125,20 +115,17 @@ public class ContractService implements InterfaceContractService {
     @Override
     public ContractResponse findAllContractById(Long utilisateurId) {
         ContractResponse contractResponse = new ContractResponse();
-        Optional<UtilisateurAll> utilisateurOptional = utilisateurRepository.findById(utilisateurId);
-        if (utilisateurOptional.isPresent()) {
-            List<ContractAll> contracts = contractRepository.findByUtilisateurAllId(utilisateurId);
-            if (contracts.isEmpty()) {
-                contractResponse.setIsSuccessfull(false);
-                contractResponse.setMessage("No contracts found for utilisateur id: " + utilisateurId);
-            } else {
-                contractResponse.setIsSuccessfull(true);
-                contractResponse.setContracts(contracts);
-            }
-        } else {
+
+        // Recherche de tous les contrats associés à l'ID de l'utilisateur
+        List<ContractAll> contracts = contractRepository.findByUtilisateurAllId(utilisateurId);
+        if (contracts.isEmpty()) {
             contractResponse.setIsSuccessfull(false);
-            contractResponse.setMessage("Utilisateur not found with id: " + utilisateurId);
+            contractResponse.setMessage("Aucun contrat trouvé pour l'utilisateur avec l'ID : " + utilisateurId);
+        } else {
+            contractResponse.setIsSuccessfull(true);
+            contractResponse.setContracts(contracts);
         }
+
         return contractResponse;
     }
 

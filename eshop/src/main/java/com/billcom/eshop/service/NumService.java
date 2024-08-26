@@ -2,6 +2,7 @@ package com.billcom.eshop.service;
 
 import com.billcom.eshop.InterfaceService.InterfaceNumService;
 import com.billcom.eshop.Request.NumRequest;
+import com.billcom.eshop.Request.NumRequestAcheterSim;
 import com.billcom.eshop.Responce.NumResponse;
 import com.billcom.eshop.commons.entities.Num;
 import com.billcom.eshop.commons.entities.PhoneType;
@@ -32,12 +33,9 @@ public class NumService implements InterfaceNumService {
 
 
     @Override
-    public ResponseEntity<NumResponse> acheterSim(Long utilisateurId, NumRequest numRequest) {
-
-
-        if (!"SIM".equalsIgnoreCase(numRequest.getNumType())) {
-            return ResponseEntity.badRequest().body(new NumResponse());
-        }
+    public ResponseEntity<NumResponse> acheterSim(Long utilisateurId, NumRequestAcheterSim numRequest) {
+        // Fixer numType à "SIM" par défaut
+        String numType = "SIM";
 
         Optional<Num> optionalNum = numRepository.findFirstByUtilisateurAllIsNull();
         if (!optionalNum.isPresent()) {
@@ -46,7 +44,7 @@ public class NumService implements InterfaceNumService {
 
         Num num = optionalNum.get();
 
-        // Generate a random serial number (between 15 and 17 characters)
+        // Générer un numéro de série aléatoire (entre 15 et 17 caractères)
         Long serialNumber = generateRandomSerialNumber();
 
         Optional<UtilisateurAll> optionalUser = utilisateurAllRepository.findById(utilisateurId);
@@ -56,8 +54,7 @@ public class NumService implements InterfaceNumService {
 
         UtilisateurAll utilisateur = optionalUser.get();
 
-        num.setNumType(numRequest.getNumType());
-
+        num.setNumType(numType);  // Définir le type de la carte SIM par défaut
         num.setUtilisateurAll(utilisateur);
         num.setNumSerialNumber(serialNumber);
         num.setNumActivationDate(LocalDate.now());
@@ -79,11 +76,11 @@ public class NumService implements InterfaceNumService {
         return Long.parseLong(serialNumber.toString());
     }
 
+
+
     @Override
     public ResponseEntity<NumResponse> acheterEsim(Long utilisateurId, NumRequest numRequest) {
-        if (!"ESIM".equalsIgnoreCase(numRequest.getNumType())) {
-            return ResponseEntity.badRequest().body(new NumResponse());
-        }
+        String numType = "eSIM";  // Définir numType à "ESIM" par défaut
 
         Optional<Num> optionalNum = numRepository.findFirstByUtilisateurAllIsNull();
         if (!optionalNum.isPresent()) {
@@ -108,7 +105,7 @@ public class NumService implements InterfaceNumService {
 
         UtilisateurAll utilisateur = optionalUser.get();
 
-        num.setNumType(numRequest.getNumType());
+        num.setNumType(numType);  // Utilisation de numType par défaut à "ESIM"
         num.setUtilisateurAll(utilisateur);
         num.setNumSerialNumber(null);
         num.setNumImei(numRequest.getNumImei());
@@ -119,6 +116,7 @@ public class NumService implements InterfaceNumService {
 
         return ResponseEntity.ok(new NumResponse());
     }
+
 
     @Override
     public ResponseEntity<NumResponse> changerSimVersEsim(Long numPhoneNumber, Long numSerialNumber, String numImei, Long phoneTypeId) {

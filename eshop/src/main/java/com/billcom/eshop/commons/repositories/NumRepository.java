@@ -17,4 +17,5 @@ public interface NumRepository extends JpaRepository<Num, Long> {
     List<Num> findAllByUtilisateurAllId(Long utilisateurId);
 
     boolean existsByNumPhoneNumber(Long numPhoneNumber);
+    Optional<Num> findByNumPhoneNumber(Long numPhoneNumber);
 }

@@ -1,6 +1,7 @@
 package com.billcom.eshop.controller;
 
 import com.billcom.eshop.Request.ContractRequest;
+import com.billcom.eshop.Request.ContractRequestAjouter;
 import com.billcom.eshop.Responce.ContractResponse;
 import com.billcom.eshop.service.ContractService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,8 +19,8 @@ public class ContractController {
     private ContractService contractService;
 
     @PostMapping("/ajouterContract")
-    public ResponseEntity<ContractResponse> ajouterContract(@RequestBody ContractRequest contractRequest) {
-        ContractResponse contractResponse = contractService.ajouterContract(contractRequest);
+    public ResponseEntity<ContractResponse> ajouterContract(@RequestBody ContractRequestAjouter contractRequestAjouter) {
+        ContractResponse contractResponse = contractService.ajouterContract(contractRequestAjouter);
         if (contractResponse.getIsSuccessfull()) {
             return ResponseEntity.ok(contractResponse);
         } else {
@@ -28,8 +29,6 @@ public class ContractController {
     }
 
     @GetMapping("/findAllContract")
-
-
 
     public ResponseEntity<ContractResponse> findAllContract() {
         ContractResponse contractResponse = contractService.findAllContract();

@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @SecurityRequirement(name = "bearer-key")
 @CrossOrigin("*")
 @RestController
@@ -21,5 +23,11 @@ public class ServiceNameController {
     public ResponseEntity<ServiceNameResponse> ajouterService(@RequestBody ServiceNameRequest serviceNameRequest) {
         ServiceNameResponse serviceNameResponse = serviceNameService.ajouterService(serviceNameRequest);
         return ResponseEntity.ok(serviceNameResponse);
+    }
+
+    @GetMapping("/findAllServiceName")
+    public ResponseEntity<List<ServiceNameResponse>> findAllServiceName() {
+        List<ServiceNameResponse> serviceNameResponses = serviceNameService.findAllServiceName();
+        return ResponseEntity.ok(serviceNameResponses);
     }
 }
